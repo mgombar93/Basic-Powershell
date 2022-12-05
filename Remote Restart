@@ -1,0 +1,2 @@
+$Computername =Read-Host "Enter Computer Name"
+Restart-Computer -Computername $Computername -Force
