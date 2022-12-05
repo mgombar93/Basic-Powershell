@@ -1,0 +1,5 @@
+#The following script will delete downloads that haven't been MODIFIED by your own set criteria
+$Age =Read-Host "Set Deletion Criteria (Days)"
+Get-ChildItem -Path "C:\Users\Administrator\Downloads" -Recurse |
+Where-Object LastWriteTime -lt (Get-Date).AddDays(-$Age) |
+Remove-Item
