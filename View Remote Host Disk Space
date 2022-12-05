@@ -1,0 +1,3 @@
+#Retrieve disk size and amount of free space on a remote host
+$Computername =Read-Host "Enter Computer Name"
+get-WmiObject win32_logicaldisk -Computername $Computername
