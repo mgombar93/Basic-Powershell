@@ -1,0 +1,6 @@
+#Use Get-ADGroup to ensure you created your group 
+$Name =Read-Host "Create Group Name"
+$SAM =Read-Host "Create Mailing Name" 
+$Category =Read-Host "Select Category"
+$Scope =Read-Host "Select Scope"
+New-ADGroup -Name $Name -SamAccountName $SAM -GroupCategory $Category -GroupScope $Scope
