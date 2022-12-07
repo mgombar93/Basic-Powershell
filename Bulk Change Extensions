@@ -1,3 +1,4 @@
 #Replace File Path and desired extensions (*.txt and "png")
+
 Get-ChildItem -Path 'C:\Users\Administrator.ADATUM\Desktop\ScriptTest\*.txt' |
 Rename-Item -NewName { [io.path]::ChangeExtension($_.Name, "png") }
