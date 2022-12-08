@@ -1,0 +1,30 @@
+function Get-hostinfo {
+[cmdletbinding()]
+    Param(
+    [parameter(mandatory=$true, valuefromPipeline=$true, valuefrompipelinebypropertyname=$true)]
+    [string[]]$dnshost
+    ) 
+    Process{
+FOREACH ($computer in $DnsHost) {
+$os=Get-CimInstance -ClassName Win32_operatingsystem -ComputerName $computer
+$uptime = $os.LocalDateTime - $os.LastBootUpTime
+
+$drivespace= Get-CimInstance  win32_LogicalDisk -Filter "DeviceID='c:'" -ComputerName $computer
+
+
+$properties =[ordered]@{
+            'Hostname' = [string]$computer; 
+            'OS' = $os.caption;
+            'LastBootTime' = $os.LastBootUpTime ;
+            'Uptime' = $uptime;
+            'C_FreeSpace_GB' = ($disk.FreeSpace / 1GB -as [int])
+            }
+     
+      $obj = New-Object -TypeName PSObject -Property $properties
+      Write-output $obj
+      $obj | Select-Object -Property Hostname, OS, LastBootTime, Uptime, C_FreeSpace_GB | export-csv -path C:\test.csv -NoTypeInformation -Append
+      }
+      }
+}
+
+Get-HostInfo -dnshost LON-DC1
