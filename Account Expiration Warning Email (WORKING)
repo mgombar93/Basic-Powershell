@@ -1,0 +1,31 @@
+### Need a FOREACH, formatting (body-html format), recipient values (emailto,name,expiration date), subject (days out)
+Import-Module Activedirectory
+
+#Days out from email sent
+$daysbefore =-14,-10,-4,-2,-1
+
+
+# Finds users that meet the $daysbefore criteria
+$users = Get-ADUser -SearchBase 'OU=Users,DC=domain,DC=local'
+-filter {Enabled -eq $True -and PasswordNeverExpires -eq $False}
+-Properties samAccountName, "msDS-UserPasswordExpiryTimeComputed", passwordlastset, mail | Where-Object {(($_.passwordlastset)-(Get-Date)).Days -in $daysbefore }
+
+# Variables for Send-Mailmessage
+$mailParams = @{
+   #SmtpServer                 = 'endpoint-url.mail.protection.outlook.com'  
+   #Port                       = '25'
+    UseSSL                     = $true   
+   #From                       = 'from@domain.com'
+   #To                         = 
+   #Subject                    = 
+   #Body                       = 
+    DeliveryNotificationOption = 'OnFailure', 'OnSuccess'  #log email to from address
+    BodyAsHtml                 = $true
+}
+
+### This is where I left off
+
+  
+Send-MailMessage @mailParams -To $emailto -Body $body -Subject $Subject
+
+
